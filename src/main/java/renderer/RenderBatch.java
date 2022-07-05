@@ -4,15 +4,13 @@ import components.SpriteRenderer;
 import jade.Window;
 import org.joml.Vector4f;
 
-import java.util.Vector;
-
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL20C.glVertexAttribPointer;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 
 public class RenderBatch {
-
     // Vertex
     // ======
     // Pos              Color
@@ -26,7 +24,6 @@ public class RenderBatch {
     private final int VERTEX_SIZE = 6;
     private final int VERTEX_SIZE_BYTES = VERTEX_SIZE * Float.BYTES;
 
-    private Shader shader;
     private SpriteRenderer[] sprites;
     private int numSprites;
     private boolean hasRoom;
@@ -34,6 +31,7 @@ public class RenderBatch {
 
     private int vaoID, vboID;
     private int maxBatchSize;
+    private Shader shader;
 
     public RenderBatch(int maxBatchSize) {
         String SHADER_PATH = "assets/shaders/default.glsl";
@@ -57,7 +55,7 @@ public class RenderBatch {
         // Allocate space for vertices
         vboID = glGenBuffers();
         glBindBuffer(GL_ARRAY_BUFFER, vboID);
-        glBufferData(GL_ARRAY_BUFFER, (long) vertices.length * Float.BYTES, GL_DYNAMIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, vertices.length * Float.BYTES, GL_DYNAMIC_DRAW);
 
         // Create and upload indices buffer
         int eboID = glGenBuffers();
@@ -89,7 +87,7 @@ public class RenderBatch {
 
     private int[] generateIndices() {
         // 6 indices per quad (3 per triangle)
-        int[] elements = new int[6 & maxBatchSize];
+        int[] elements = new int[6 * maxBatchSize];
         for (int i = 0; i < maxBatchSize; i++) {
             loadElementIndices(elements, i);
         }
@@ -168,5 +166,9 @@ public class RenderBatch {
 
             offset += VERTEX_SIZE;
         }
+    }
+
+    public boolean hasRoom() {
+        return this.hasRoom;
     }
 }
