@@ -2,7 +2,6 @@ package renderer;
 
 import org.joml.*;
 import org.lwjgl.BufferUtils;
-import org.w3c.dom.ls.LSOutput;
 
 import java.io.IOException;
 import java.nio.FloatBuffer;
@@ -58,11 +57,11 @@ public class Shader {
             assert false : "Error: Could not open file for shader: '" + filepath + "'";
         }
 
-        System.out.println(vertexSource);
-        System.out.println(fragmentSource);
+//        System.out.println(vertexSource);
+//        System.out.println(fragmentSource);
     }
 
-    public void compileAndLink() {
+    public void compile() {
         // ===================================================
         // Compile and link shaders
         // ===================================================
