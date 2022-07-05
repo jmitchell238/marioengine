@@ -8,7 +8,6 @@ import renderer.Shader;
 import renderer.Texture;
 import util.Time;
 
-import java.awt.*;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
@@ -63,7 +62,7 @@ public class LevelEditorScene extends Scene{
 
         this.camera = new Camera(new Vector2f());
         defaultShader = new Shader("assets/shaders/default.glsl");
-        defaultShader.compileAndLink();
+        defaultShader.compile();
         this.testTexture = new Texture("assets/images/testImage.png");
 
         // ===================================================
