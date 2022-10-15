@@ -7,6 +7,8 @@ import org.joml.Vector2f;
 import org.joml.Vector4f;
 import util.AssetPool;
 
+import javax.swing.*;
+
 public class LevelEditorScene extends Scene{
 
     private GameObject obj1;
@@ -24,12 +26,18 @@ public class LevelEditorScene extends Scene{
 
         sprites = AssetPool.getSpriteSheet("assets/images/spritesheet.png");
 
-        obj1 = new GameObject("Object 1", new Transform(new Vector2f(100, 100), new Vector2f(256, 256)));
-        obj1.addComponent(new SpriteRenderer(sprites.getSprite(0)));
+        obj1 = new GameObject("Object 1",
+                new Transform(new Vector2f(200, 100), new Vector2f(256, 256)), 1);
+        obj1.addComponent(new SpriteRenderer(new Sprite(
+                AssetPool.getTexture("assets/images/blendImage1.png")
+        )));
         this.addGameObjectToScene(obj1);
 
-        GameObject obj2 = new GameObject("Object 2", new Transform(new Vector2f(400, 100), new Vector2f(256, 256)));
-        obj2.addComponent(new SpriteRenderer(sprites.getSprite(15)));
+        GameObject obj2 = new GameObject("Object 2",
+                new Transform(new Vector2f(400, 100), new Vector2f(256, 256)), 2);
+        obj2.addComponent(new SpriteRenderer(new Sprite(
+                AssetPool.getTexture("assets/images/blendImage2.png")
+        )));
         this.addGameObjectToScene(obj2);
     }
 
@@ -41,24 +49,26 @@ public class LevelEditorScene extends Scene{
                         16, 16, 26, 0));
     }
 
-    private int spriteIndex = 0;
-    private float spriteFlipTime = 0.2f;
-    private float spriteFlipTimeLeft = 0.0f;
+    // This was for Mario Animation
+//    private int spriteIndex = 0;
+//    private float spriteFlipTime = 0.2f;
+//    private float spriteFlipTimeLeft = 0.0f;
 
     @Override
     public void update(float dt) {
         // Print out FPS to console
         // System.out.println("FPS: " + (1.0f / dt));
 
-        spriteFlipTimeLeft -= dt;
-        if (spriteFlipTimeLeft <= 0) {
-            spriteFlipTimeLeft = spriteFlipTime;
-            spriteIndex++;
-            if (spriteIndex > 4) {
-                spriteIndex = 0;
-            }
-            obj1.getComponent(SpriteRenderer.class).setSprite(sprites.getSprite(spriteIndex));
-        }
+        // This was for Mario Animation
+//        spriteFlipTimeLeft -= dt;
+//        if (spriteFlipTimeLeft <= 0) {
+//            spriteFlipTimeLeft = spriteFlipTime;
+//            spriteIndex++;
+//            if (spriteIndex > 4) {
+//                spriteIndex = 0;
+//            }
+//            obj1.getComponent(SpriteRenderer.class).setSprite(sprites.getSprite(spriteIndex));
+//        }
 
         // Move Mario to the right
 //        obj1.transform.position.x += 10 * dt;
