@@ -27,16 +27,16 @@ public class Window {
         this.title = "Mario";
 
         // White
-        // r = 1;
-        // b = 1;
-        // g = 1;
-        // a = 1;
+         r = 1;
+         b = 1;
+         g = 1;
+         a = 1;
 
         // Black
-         r = 0;
-         b = 0;
-         g = 0;
-         a = 0;
+//         r = 0;
+//         b = 0;
+//         g = 0;
+//         a = 0;
 
         // Red
 //        r = 0.7f;
@@ -129,6 +129,9 @@ public class Window {
         // creates the GLCapabilities instance and makes the OpenGL
         // bindings available for use.
         GL.createCapabilities();
+
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 
         Window.changeScene(0);
     }
