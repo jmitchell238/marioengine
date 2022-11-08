@@ -7,7 +7,14 @@ version '1.0-SNAPSHOT'
 sourceCompatibility = 1.11
 
 repositories {
+//    jcenter() // For GWG - YT - Video Tutorial
     mavenCentral()
+}
+
+// The following comes from SpaiR imggui-java github - Update lwjgl and imgui Versions compared to GWG YT Tutorial
+ext {
+    lwjglVersion = '3.3.1'
+    imguiVersion = '1.86.4'
 }
 
 dependencies {
@@ -15,11 +22,24 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
 }
 
-project.ext.lwjglVersion = "3.2.3"
 project.ext.jomlVersion = "1.10.3"
 project.ext.lwjglNatives = "natives-windows"
 
 dependencies {
+    // The following comes from SpaiR imggui-java Github - Doesn't seem to build correctly with this project out of the box.
+    implementation platform("org.lwjgl:lwjgl-bom:$lwjglVersion")
+
+    ['', '-opengl', '-glfw'].each {
+        implementation "org.lwjgl:lwjgl$it:$lwjglVersion"
+        implementation "org.lwjgl:lwjgl$it::natives-windows"
+    }
+
+    implementation "io.github.spair:imgui-java-binding:$imguiVersion"
+    implementation "io.github.spair:imgui-java-lwjgl3:$imguiVersion"
+
+    implementation "io.github.spair:imgui-java-natives-windows:$imguiVersion"
+
+    // LWJGL Stuff
     implementation platform("org.lwjgl:lwjgl-bom:$lwjglVersion")
 
     implementation "org.lwjgl:lwjgl"
@@ -38,3 +58,48 @@ dependencies {
     runtimeOnly "org.lwjgl:lwjgl-stb::$lwjglNatives"
     implementation "org.joml:joml:1.10.2"
 }
+
+// From GWG - YT - Video Tutorial
+//dependencies {
+//    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+//    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+//}
+//
+//project.ext.lwjglVersion = "3.2.3"
+//project.ext.jomlVersion = "1.10.3"
+//project.ext.lwjglNatives = "natives-windows"
+//project.ext.imguiVersion = '1.76-0.9'
+//
+//
+//dependencies {
+//    // ImGUI Stuff
+//    implementation "io.imgui.java:binding:$imguiVersion"
+//    implementation "io.imgui.java:lwjg13:$imguiVersion"
+//
+//    implementation "io.github.spair:imgui-java-app:1.86.4" // This is from the Github Repo
+//
+////     Include all available natives, but it's likely that you want something specific
+//    runtimeOnly "io.imgui.java:natives-windows:$imguiVersion"
+////    runtimeOnly "io.imgui.java:natives-windows-x86:$imguiVersion" // We only worry about this if we are running on x86 version of windows
+////    runtimeOnly "io.imgui.java:natives-linux:$imguiVersion"       // We only worry about this if we are running on linux
+////    runtimeOnly "io.imgui.java:natives-linux-x86:$imguiVersion"   // We only worry about this if we are running on x86 version of linux
+//
+//    // LWJGL Stuff
+//    implementation platform("org.lwjgl:lwjgl-bom:$lwjglVersion")
+//
+//    implementation "org.lwjgl:lwjgl"
+//    implementation "org.lwjgl:lwjgl-assimp"
+//    implementation "org.lwjgl:lwjgl-glfw"
+//    implementation "org.lwjgl:lwjgl-nfd"
+//    implementation "org.lwjgl:lwjgl-openal"
+//    implementation "org.lwjgl:lwjgl-opengl"
+//    implementation "org.lwjgl:lwjgl-stb"
+//    runtimeOnly "org.lwjgl:lwjgl::$lwjglNatives"
+//    runtimeOnly "org.lwjgl:lwjgl-assimp::$lwjglNatives"
+//    runtimeOnly "org.lwjgl:lwjgl-glfw::$lwjglNatives"
+//    runtimeOnly "org.lwjgl:lwjgl-nfd::$lwjglNatives"
+//    runtimeOnly "org.lwjgl:lwjgl-openal::$lwjglNatives"
+//    runtimeOnly "org.lwjgl:lwjgl-opengl::$lwjglNatives"
+//    runtimeOnly "org.lwjgl:lwjgl-stb::$lwjglNatives"
+//    implementation "org.joml:joml:1.10.2"
+//}
