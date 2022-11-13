@@ -169,7 +169,7 @@ public class Window {
 //                fadeToBlack = true;
 //            }
 
-            this.imGuiLayer.update(dt);
+            this.imGuiLayer.update(dt, currentScene);
             glfwSwapBuffers(glfwWindow);
 
             endTime = (float)glfwGetTime();

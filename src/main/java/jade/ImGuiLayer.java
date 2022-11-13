@@ -1,13 +1,12 @@
 package jade;
 
+import imgui.ImFontAtlas;
+import imgui.ImFontConfig;
 import imgui.ImGui;
 import imgui.ImGuiIO;
 import imgui.callback.ImStrConsumer;
 import imgui.callback.ImStrSupplier;
-import imgui.flag.ImGuiBackendFlags;
-import imgui.flag.ImGuiConfigFlags;
-import imgui.flag.ImGuiKey;
-import imgui.flag.ImGuiMouseCursor;
+import imgui.flag.*;
 import imgui.gl3.ImGuiImplGl3;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -35,7 +34,7 @@ public class ImGuiLayer {
         // Initialize ImGuiIO config
         final ImGuiIO io = ImGui.getIO();
 
-        io.setIniFilename(null); // We don't want to save .ini file
+        io.setIniFilename("imgui.ini");
         io.setConfigFlags(ImGuiConfigFlags.NavEnableKeyboard); // Navigation with keyboard
         io.setBackendFlags(ImGuiBackendFlags.HasMouseCursors); // Mouse cursors to display while resizing windows etc.
         io.setBackendPlatformName("imgui_java_impl_glfw");
@@ -136,43 +135,16 @@ public class ImGuiLayer {
 
         // ------------------------------------------------------------
         // Fonts configuration
+        final ImFontAtlas fontAtlas = io.getFonts();
+        final ImFontConfig fontConfig = new ImFontConfig(); // Keep in mind that creation of the ImFontConfig will allocate the native memory
+        fontConfig.setGlyphRanges(fontAtlas.getGlyphRangesDefault());
+        fontConfig.setPixelSnapH(true);
+        fontAtlas.addFontFromFileTTF("assets/fonts/segoeui.ttf", 32, fontConfig);
 
-        // -------------------
-        // Fonts merge example
+        fontConfig.destroy(); // After all fonts were added we don't need this config more
 
-//        final ImFontAtlas fontAtlas = io.getFonts();
-//
-//        // First of all we add a default font, which is 'ProggyClean.ttf, 13px'
-//        fontAtlas.addFontDefault();
-//
-//        final ImFontConfig fontConfig = new ImFontConfig(); // Keep in mind that creation of the ImFontConfig will allocate the native memory
-//        fontConfig.setMergeMode(true); // All fonts added while this mode is turned on will be merged with the previously added font
-//        fontConfig.setPixelSnapH(true);
-//        fontConfig.setGlyphRanges(fontAtlas.getGlyphRangesCyrillic()); // Additional glyphs could be added like this or in "addFontFrom*()" methods
-//
-//        // We merge font loaded from resources with the default one. Thus we will get an absent cyrillic glyphs
-//        fontAtlas.addFontFromMemoryTTF(loadFromResources("basis33.ttf"), 16, fontConfig);
-//
-//        // Disable merge mode and add all other fonts normally
-//        fontConfig.setMergeMode(false);
-//        fontConfig.setPixelSnapH(false);
-//
-//        // ------------------------------
-//        // Fonts from file/memory example
-//
-//        fontConfig.setRasterizerMultiply(1.2f); // This will make fonts a bit more readable
-//
-//        // We can add new fonts directly from file
-//        fontAtlas.addFontFromFileTTF("src/test/resources/DroidSans.ttf", 13, fontConfig);
-//        fontAtlas.addFontFromFileTTF("src/test/resources/DroidSans.ttf", 14, fontConfig);
-//
-//        // Or directly from memory
-//        fontConfig.setName("Roboto-Regular.ttf, 13px"); // This name will be displayed in Style Editor
-//        fontAtlas.addFontFromMemoryTTF(loadFromResources("Roboto-Regular.ttf"), 13, fontConfig);
-//        fontConfig.setName("Roboto-Regular.ttf, 14px"); // We can apply a new config value every time we add a new font
-//        fontAtlas.addFontFromMemoryTTF(loadFromResources("Roboto-Regular.ttf"), 14, fontConfig);
-//
-//        fontConfig.destroy(); // After all fonts were added we don't need this config more
+        fontAtlas.setFlags(ImGuiFreeTypeBuilderFlags.LightHinting);
+        fontAtlas.build();
 
         // Method initializes LWJGL3 renderer.
         // This method SHOULD be called after you've initialized your ImGui configuration (fonts and so on).
@@ -180,11 +152,12 @@ public class ImGuiLayer {
         imGuiGl3.init("#version 330 core");
     }
 
-    public void update(float dt) {
+    public void update(float dt, Scene currentScene) {
         startFrame(dt);
 
-        // Any Dear ImGui coe SHOULD go between ImGui.newFrame()/ImGui.render() methods
+        // Any Dear ImGui code SHOULD go between ImGui.newFrame()/ImGui.render() methods
         ImGui.newFrame();
+        currentScene.sceneImgui();
         ImGui.showDemoWindow();
         ImGui.render();
 
