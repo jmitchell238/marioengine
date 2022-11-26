@@ -87,3 +87,9 @@ nb-configuration.xml
 ## Build Files - imgui setting
 ##############################
 imgui.ini
+
+##############################
+## Save Files -
+##############################
+level.txt
+level.txt

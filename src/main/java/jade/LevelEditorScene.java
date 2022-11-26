@@ -2,6 +2,7 @@ package jade;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import components.Rigidbody;
 import components.Sprite;
 import components.SpriteRenderer;
 import components.Spritesheet;
@@ -27,6 +28,7 @@ public class LevelEditorScene extends Scene{
         loadResources();
         this.camera = new Camera(new Vector2f(-250, 0));
         if(levelLoaded) {
+            this.activeGameObject = gameObjects.get(0);
             return;
         }
 
@@ -37,6 +39,7 @@ public class LevelEditorScene extends Scene{
         this.obj1SpriteRenderer = new SpriteRenderer();
         obj1SpriteRenderer.setColor(new Vector4f(1,0,0,1));
         obj1.addComponent(obj1SpriteRenderer);
+        obj1.addComponent(new Rigidbody());
         this.addGameObjectToScene(obj1);
         this.activeGameObject = obj1;
 
@@ -56,32 +59,12 @@ public class LevelEditorScene extends Scene{
         AssetPool.addSpritesheet("assets/images/spritesheet.png",
                 new Spritesheet(AssetPool.getTexture("assets/images/spritesheet.png"),
                         16, 16, 26, 0));
-    }
 
-    // This was for Mario Animation
-//    private int spriteIndex = 0;
-//    private float spriteFlipTime = 0.2f;
-//    private float spriteFlipTimeLeft = 0.0f;
+        AssetPool.getTexture("assets/images/blendImage2.png");
+    }
 
     @Override
     public void update(float dt) {
-        // Print out FPS to console
-        // System.out.println("FPS: " + (1.0f / dt));
-
-        // This was for Mario Animation
-//        spriteFlipTimeLeft -= dt;
-//        if (spriteFlipTimeLeft <= 0) {
-//            spriteFlipTimeLeft = spriteFlipTime;
-//            spriteIndex++;
-//            if (spriteIndex > 4) {
-//                spriteIndex = 0;
-//            }
-//            obj1.getComponent(SpriteRenderer.class).setSprite(sprites.getSprite(spriteIndex));
-//        }
-
-        // Move Mario to the right
-//        obj1.transform.position.x += 10 * dt;
-
         for (GameObject go : this.gameObjects) {
             go.update(dt);
         }
