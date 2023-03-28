@@ -94,8 +94,8 @@ public class LevelEditorScene extends Scene{
             Vector2f[] texCoords = sprite.getTexCoords();
 
             ImGui.pushID(i);
-            if (ImGui.imageButton(id, spriteWidth, spriteHeight, texCoords[0].x, texCoords[0].y,
-                    texCoords[2].x, texCoords[2].y)) {
+            if (ImGui.imageButton(id, spriteWidth, spriteHeight, texCoords[2].x, texCoords[0].y,
+                    texCoords[0].x, texCoords[2].y)) {
                 System.out.println("Button " + i + " clicked");
             }
             ImGui.popID();
