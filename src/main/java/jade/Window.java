@@ -3,6 +3,7 @@ package jade;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
+import renderer.DebugDraw;
 import scenes.LevelEditorScene;
 import scenes.LevelScene;
 import scenes.Scene;
@@ -156,22 +157,15 @@ public class Window {
             // Poll events
             glfwPollEvents();
 
+            DebugDraw.beginFrame();
+
             glClearColor(r, g, b, a);
             glClear(GL_COLOR_BUFFER_BIT);
 
             if(dt >= 0) {
+                DebugDraw.draw();
                 currentScene.update(dt);
             }
-
-//            if (fadeToBlack) {
-//                r = Math.max(r - 0.01f, 0);
-//                g = Math.max(g - 0.01f, 0);
-//                b = Math.max(b - 0.01f, 0);
-//            }
-//
-//            if (KeyListener.isKeyPressed(GLFW_KEY_SPACE)) {
-//                fadeToBlack = true;
-//            }
 
             this.imGuiLayer.update(dt, currentScene);
             glfwSwapBuffers(glfwWindow);
