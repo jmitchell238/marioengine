@@ -17,6 +17,9 @@ public class Camera {
     @Getter
     private Matrix4f inverseView;
 
+    @Getter
+    private Vector2f projectionSize = new Vector2f(32.0f * 40.0f, 32.0f * 21.0f);
+
     public Vector2f position;
 
     public Camera(Vector2f position) {
@@ -32,9 +35,9 @@ public class Camera {
         projectionMatrix.identity();
         projectionMatrix.ortho(
             0.0f,
-            32.0f * 40.0f,
+            projectionSize.x,
             0.0f,
-            32.0f * 21.0f,
+            projectionSize.y,
             0.0f,
             100.0f);
         projectionMatrix.invert(inverseProjection);
