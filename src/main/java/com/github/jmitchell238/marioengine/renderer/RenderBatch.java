@@ -67,7 +67,7 @@ public class RenderBatch implements Comparable<RenderBatch>{
         // Allocate space for vertices
         vboID = glGenBuffers();
         glBindBuffer(GL_ARRAY_BUFFER, vboID);
-        glBufferData(GL_ARRAY_BUFFER, vertices.length * Float.BYTES, GL_DYNAMIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, (long) vertices.length * Float.BYTES, GL_DYNAMIC_DRAW);
 
         // Create and upload indices buffer
         int eboID = glGenBuffers();
@@ -95,10 +95,8 @@ public class RenderBatch implements Comparable<RenderBatch>{
         this.sprites[index] = spr;
         this.numSprites++;
 
-        if (spr.getTexture() != null) {
-            if (!textures.contains(spr.getTexture())) {
-                textures.add(spr.getTexture());
-            }
+        if (spr.getTexture() != null && !textures.contains(spr.getTexture())) {
+            textures.add(spr.getTexture());
         }
 
         // Add properties to local vertices array
@@ -190,7 +188,7 @@ public class RenderBatch implements Comparable<RenderBatch>{
         int texId = 0;
         if (sprite.getTexture() != null) {
             for (int i = 0; i < textures.size(); i++) {
-                if (textures.get(i) == sprite.getTexture()) {
+                if (textures.get(i).equals(sprite.getTexture())) {
                     texId = i + 1;
                     break;
                 }

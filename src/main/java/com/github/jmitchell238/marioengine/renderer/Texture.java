@@ -1,5 +1,6 @@
 package com.github.jmitchell238.marioengine.renderer;
 
+import lombok.Getter;
 import org.lwjgl.BufferUtils;
 
 import java.nio.ByteBuffer;
@@ -9,9 +10,31 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.stb.STBImage.*;
 
 public class Texture {
+    @Getter
     private String filepath;
-    private int texID;
-    private int width, height;
+    private transient int texID;
+    @Getter
+    private int width;
+    @Getter
+    private int height;
+
+    public Texture() {
+        this.filepath = "";
+        this.texID = -1;
+        this.width = -1;
+        this.height = -1;
+    }
+
+    public Texture(int width, int height) {
+        this.filepath = "Generated";
+
+        // Generate texture on GPU
+        texID = glGenTextures();
+        glBindTexture(GL_TEXTURE_2D, texID);
+
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height,
+                0, GL_RGB, GL_UNSIGNED_BYTE, 0);
+    }
 
     public void init(String filepath) {
         this.filepath = filepath;
@@ -63,15 +86,15 @@ public class Texture {
         glBindTexture(GL_TEXTURE_2D, 0);
     }
 
-    public int getWidth() {
-        return this.width;
-    }
-
-    public int getHeight() {
-        return this.height;
-    }
-
     public int getId() {
         return this.texID;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null) return false;
+        if (!(o instanceof Texture)) return false;
+        Texture t = (Texture) o;
+        return t.getWidth() == this.width && t.getHeight() == this.height && t.getId() == this.texID && t.getFilepath().equals(this.filepath);
     }
 }
