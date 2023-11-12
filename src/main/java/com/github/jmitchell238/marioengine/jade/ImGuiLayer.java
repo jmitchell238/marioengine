@@ -9,7 +9,9 @@ import imgui.callback.ImStrSupplier;
 import imgui.flag.*;
 import imgui.gl3.ImGuiImplGl3;
 import com.github.jmitchell238.marioengine.scenes.Scene;
+import imgui.type.ImBoolean;
 
+import static imgui.flag.ImGuiWindowFlags.*;
 import static org.lwjgl.glfw.GLFW.*;
 
 public class ImGuiLayer {
@@ -37,6 +39,11 @@ public class ImGuiLayer {
 
         io.setIniFilename("imgui.ini");
         io.setConfigFlags(ImGuiConfigFlags.NavEnableKeyboard); // Navigation with keyboard
+
+        // Enable docking
+        io.setConfigFlags(io.getConfigFlags() | ImGuiConfigFlags.DockingEnable);
+        io.setConfigFlags(io.getConfigFlags() | ImGuiConfigFlags.ViewportsEnable);
+
         io.setBackendFlags(ImGuiBackendFlags.HasMouseCursors); // Mouse cursors to display while resizing windows etc.
         io.setBackendPlatformName("imgui_java_impl_glfw");
 
@@ -166,8 +173,10 @@ public class ImGuiLayer {
 
         // Any Dear ImGui code SHOULD go between ImGui.newFrame()/ImGui.render() methods
         ImGui.newFrame();
+        setupDockspace();
         currentScene.sceneImgui();
         ImGui.showDemoWindow();
+        ImGui.end();
         ImGui.render();
 
         endFrame();
@@ -205,5 +214,21 @@ public class ImGuiLayer {
     private void destroyImGui() {
         imGuiGl3.dispose();
         ImGui.destroyContext();
+    }
+
+    private void setupDockspace() {
+        int windowFlags = MenuBar | NoDocking;
+
+        ImGui.setNextWindowPos(0.0F, 0.0F, ImGuiCond.Always);
+        ImGui.setNextWindowSize(Window.getWidth(), Window.getHeight());
+        ImGui.pushStyleVar(ImGuiStyleVar.WindowRounding, 0.0F);
+        ImGui.pushStyleVar(ImGuiStyleVar.WindowBorderSize, 0.0F);
+        windowFlags |= NoTitleBar | NoCollapse | NoResize | NoMove | NoBringToFrontOnFocus | NoNavFocus;
+
+        ImGui.begin("DockSpace Demo", new ImBoolean(true), windowFlags);
+        ImGui.popStyleVar(2);
+
+        // DockSpace
+        ImGui.dockSpace(ImGui.getID("DockSpace"), 0.0f, 0.0f, ImGuiDockNodeFlags.PassthruCentralNode);
     }
 }
